@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>STAND MAQUINISTA – GLORIES</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body { margin: 0; padding: 0; background: #F8F8F8; color: #1D1D1D; }
+    .container { padding: 22px; max-width: 1100px; margin: 0 auto; }
+
+    /* TÍTULO PRINCIPAL */
+    .main-title {
+      text-align: center;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #FF6A38;
+      margin-bottom: 4px;
+      margin-top: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #555;
+      margin-bottom: 26px;
+      font-weight: 500;
+    }
+
+    h1 { margin: 0 0 12px 0; font-size: 1.9rem; font-weight: 600; }
+    .section-title { font-weight:600;font-size:1rem;margin:16px 0 8px;text-transform:uppercase;color:#555;}
+
+    /* CHIPS */
+    .chips-row, .dates-row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+    .chip, .date-btn {
+      padding:8px 16px; border-radius:40px; border:1px solid #DDD;
+      background:#EEE; cursor:pointer; font-size:0.9rem; transition:0.15s;
+    }
+    .chip.active, .date-btn.active {
+      background:#FFD858; border-color:#E2C24F; font-weight:600; color:#1D1D1D;
+    }
+
+    /* RESET BUTTON */
+    .reset-btn {
+      display:inline-flex; align-items:center; gap:6px; background:#EAEAEA;
+      padding:7px 14px; border-radius:30px; border:none;
+      cursor:pointer;font-size:0.85rem;color:#333;font-weight:500;margin-bottom:18px;
+    }
+    .reset-btn:hover { background:#DDD; }
+
+    /* PANEL */
+    .panel {
+      background:#FFF; border-radius:16px; padding:18px;
+      box-shadow:0 2px 6px rgba(0,0,0,0.05); border:1px solid #EEE;
+      margin-bottom:25px;
+    }
+
+    /* BOTONES CLIENTES */
+    .buttons-grid {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+      gap:12px; align-items:center;
+    }
+    .btn {
+      background:#FFF; border-radius:40px; border:1px solid #DDD;
+      padding:14px 16px; font-size:0.95rem; cursor:pointer;
+      display:flex; justify-content:space-between; font-weight:500;
+    }
+    .btn:hover { background:#FFF6D8; }
+    .count-badge { padding:5px 10px; background:#FFF1B6; border-radius:10px; font-weight:600; }
+
+    /* MINUS BUTTON */
+    .minus-btn {
+      background:#E54242; color:white; border:none;
+      padding:6px 12px; border-radius:40px; cursor:pointer;
+      font-size:0.75rem; font-weight:600; width:fit-content;
+    }
+    .minus-btn:hover { background:#C73737; }
+
+    textarea, input[type="tel"], input[type="number"] {
+      width:100%; border-radius:12px; border:1px solid #CCC;
+      padding:10px; font-size:0.93rem; margin-top:6px;
+    }
+
+    /* FORMULARIO DESPLEGABLE */
+    #formularioToggle {
+      width:100%; border:1px solid #DDD; background:white;
+      padding:12px; border-radius:14px; cursor:pointer;
+      font-size:1rem; font-weight:600; display:flex;
+      justify-content:space-between; align-items:center; margin-bottom:10px;
+    }
+
+    #formularioFinDia {
+      display:none; background:white; padding:18px; border-radius:14px;
+      border:1px solid #EEE; box-shadow:0 2px 6px rgba(0,0,0,0.05);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- NUEVO TÍTULO DOGFY -->
+  <div class="main-title">DOGFYDIET</div>
+  <div class="subtitle">STAND MAQUINISTA – GLORIES</div>
+<!-- SELECTORES -->
+
+<div class="section-title">Comercial</div>
+<div class="chips-row">
+  <button class="chip sales-chip active" data-sales="Emiliano">Emiliano</button>
+  <button class="chip sales-chip" data-sales="Ferran">Ferran</button>
+  <button class="chip sales-chip" data-sales="Miquel">Miquel</button>
+  <button class="chip sales-chip" data-sales="Michele">Michele</button>
+  <button class="chip sales-chip" data-sales="Silvia">Silvia</button>
+</div>
+
+<div class="section-title">Día</div>
+<div class="dates-row">
+  <button class="date-btn active" data-date="2025-12-12">12/12</button>
+  <button class="date-btn" data-date="2025-12-13">13/12</button>
+  <button class="date-btn" data-date="2025-12-14">14/12</button>
+  <button class="date-btn" data-date="2025-12-19">19/12</button>
+  <button class="date-btn" data-date="2025-12-20">20/12</button>
+  <button class="date-btn" data-date="2025-12-21">21/12</button>
+</div>
+
+<!-- RESET -->
+<button class="reset-btn" id="resetCountersBtn">♻️ Reiniciar</button>
+
+<!-- CONTADORES -->
+
+<div class="panel">
+  <div class="section-title">Registro de clientes</div>
+
+  <div class="buttons-grid">
+
+    <div>
+      <button class="btn" data-type="NEVERITA">NEVERITA 
+        <span id="count-NEVERITA" class="count-badge">0</span>
+      </button>
+      <button class="minus-btn" data-minus="NEVERITA">–</button>
+    </div>
+
+    <div>
+      <button class="btn" data-type="QUEJAS_ATC">QUEJAS ATC 
+        <span id="count-QUEJAS_ATC" class="count-badge">0</span>
+      </button>
+      <button class="minus-btn" data-minus="QUEJAS_ATC">–</button>
+    </div>
+
+    <div>
+      <button class="btn" data-type="TARJETA">TARJETA 
+        <span id="count-TARJETA" class="count-badge">0</span>
+      </button>
+      <button class="minus-btn" data-minus="TARJETA">–</button>
+    </div>
+
+    <div>
+      <button class="btn" data-type="FTB">FTB 
+        <span id="count-FTB" class="count-badge">0</span>
+      </button>
+      <button class="minus-btn" data-minus="FTB">–</button>
+    </div>
+
+    <div>
+      <button class="btn" data-type="YA_SON_CLIENTES">YA SON CLIENTES 
+        <span id="count-YA_SON_CLIENTES" class="count-badge">0</span>
+      </button>
+      <button class="minus-btn" data-minus="YA_SON_CLIENTES">–</button>
+    </div>
+
+    <!-- NUEVOS BOTONES -->
+    <div>
+      <button class="btn" data-type="MUCHA_GENTE">MUCHA GENTE 
+        <span id="count-MUCHA_GENTE" class="count-badge">0</span>
+      </button>
+      <button class="minus-btn" data-minus="MUCHA_GENTE">–</button>
+    </div>
+
+    <div>
+      <button class="btn" data-type="POCA_GENTE">POCA GENTE 
+        <span id="count-POCA_GENTE" class="count-badge">0</span>
+      </button>
+      <button class="minus-btn" data-minus="POCA_GENTE">–</button>
+    </div>
+
+  </div>
+
+  <p style="margin-top:14px;font-size:0.95rem;">
+    Total clientes: <span id="totalCountLabel">0</span>
+  </p>
+</div>
+
+<!-- HISTORIAL -->
+
+<div class="panel">
+  <div class="section-title">Historial</div>
+  <div id="logList" style="max-height:220px;overflow-y:auto;font-size:0.9rem;color:#444;">
+    <div style="text-align:center;color:#777;">Todavía no hay registros.</div>
+  </div>
+</div>
+
+<!-- TELÉFONOS -->
+
+<div class="panel">
+  <div class="section-title">Teléfonos</div>
+
+  <div style="display:flex;gap:10px;">
+    <input type="tel" id="phoneInput" placeholder="Añadir número..." />
+    <button class="reset-btn" id="addPhoneBtn" style="background:#FFD858;color:#000;">Guardar</button>
+  </div>
+
+  <div id="phonesList" style="margin-top:14px;max-height:200px;overflow-y:auto;padding:4px;font-size:0.9rem;">
+    <div style="text-align:center;color:#777;">No hay teléfonos guardados.</div>
+  </div>
+</div>
+
+<!-- COMENTARIOS -->
+
+<div class="panel">
+  <div class="section-title">Comentarios del día</div>
+  <textarea id="commentsArea" placeholder="Escribe aquí tus notas..."></textarea>
+
+  <!-- BOTÓN PARA GUARDAR COMENTARIOS -->
+  <button class="reset-btn" id="saveCommentBtn" style="background:#FFD858;color:#000;margin-top:10px;">
+    💾 Guardar comentarios
+  </button>
+</div>
+
+<!-- FORMULARIO DESPLEGABLE -->
+
+<div id="formularioWrapper">
+  <button id="formularioToggle">
+    FORMULARIO FIN DEL DÍA <span>▼</span>
+  </button>
+
+  <div id="formularioFinDia">
+    <h2>Formulario Fin del Día</h2>
+
+    <h3>Zona y Actividad</h3>
+
+    <div class="question-block"><label>¿Cómo valorarías la ubicación?</label>
+    <textarea class="form-input" data-field="ubicacion_muestreo"></textarea></div>
+
+    <div class="question-block"><label>Aspectos que facilitaron</label>
+    <textarea class="form-input" data-field="facilitadores_zona"></textarea></div>
+
+    <div class="question-block"><label>Dificultades</label>
+    <textarea class="form-input" data-field="dificultades_zona"></textarea></div>
+
+    <div class="question-block"><label>¿Zona adecuada para repetir?</label>
+    <textarea class="form-input" data-field="zona_repetir"></textarea></div>
+
+    <h3>Público</h3>
+
+    <input type="number" class="form-input" data-field="personas_espontaneas" placeholder="Espontáneas">
+    <input type="number" class="form-input" data-field="personas_abordadas" placeholder="Abordadas">
+
+    <input type="number" id="auto_muestras" disabled placeholder="FTB autom.">
+    <input type="number" id="auto_clientes" disabled placeholder="Clientes autom.">
+
+    <h3>Feedback</h3>
+
+    <textarea class="form-input" data-field="perfil_petparents" placeholder="Perfil"></textarea>
+    <textarea class="form-input" data-field="reaccion_muestra" placeholder="Reacción"></textarea>
+    <textarea class="form-input" data-field="comentarios_repetidos" placeholder="Comentarios repetidos"></textarea>
+    <textarea class="form-input" data-field="speech_mejor" placeholder="Speech mejor"></textarea>
+    <textarea class="form-input" data-field="speech_mejorar" placeholder="Speech a mejorar"></textarea>
+    <textarea class="form-input" data-field="objeciones" placeholder="Objeciones"></textarea>
+
+    <h3>Resultados</h3>
+
+    <textarea class="form-input" data-field="nivel_interes" placeholder="Nivel de interés"></textarea>
+    <textarea class="form-input" data-field="mejorar_conversion" placeholder="Mejorar conversión"></textarea>
+    <textarea class="form-input" data-field="recomendaciones" placeholder="Recomendaciones"></textarea>
+    <textarea class="form-input" data-field="comentarios_extra" placeholder="Comentarios adicionales"></textarea>
+
+  </div>
+</div>
+
+<!-- EXPORTACIONES -->
+
+<div class="panel">
+  <div class="section-title">Exportaciones</div>
+
+  <button class="reset-btn" id="exportFormCSV" style="background:#FFD858;color:#000;">Exportar CSV</button>
+  <button class="reset-btn" id="exportFormZIP" style="background:#FFD858;color:#000;">Exportar TODO (ZIP)</button>
+
+  <button class="reset-btn" id="resetFullBtn" style="background:#E54242;color:white;margin-top:10px;">
+    🗑️ Reset TOTAL (borrar todo)
+  </button>
+
+  <button class="reset-btn" id="volverArribaBtn" style="background:#EAEAEA;margin-top:10px;">
+    ↑ Volver arriba
+  </button>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<script>
+
+/********************************************************************
+ *  CONFIGURACIÓN DE ESTADO
+ ********************************************************************/
+
+const BUTTON_TYPES = [
+  { key: "NEVERITA", label: "NEVERITA" },
+  { key: "QUEJAS_ATC", label: "QUEJAS ATC" },
+  { key: "TARJETA", label: "TARJETA" },
+  { key: "FTB", label: "FTB" },
+  { key: "YA_SON_CLIENTES", label: "YA SON CLIENTES" },
+  
+  // NUEVOS BOTONES
+  { key: "MUCHA_GENTE", label: "MUCHA GENTE" },
+  { key: "POCA_GENTE", label: "POCA GENTE" }
+];
+
+const STORAGE_DATA = "dogfy_stand_data";
+const STORAGE_FORM = "dogfy_stand_form";
+
+let data = {};
+let formData = {};
+
+let currentSales = "Emiliano";
+let currentDate = "2025-12-12";
+
+
+/********************************************************************
+ *  LOAD / SAVE
+ ********************************************************************/
+
+function loadAll() {
+  try { data = JSON.parse(localStorage.getItem(STORAGE_DATA)) || {}; }
+  catch { data = {}; }
+
+  try { formData = JSON.parse(localStorage.getItem(STORAGE_FORM)) || {}; }
+  catch { formData = {}; }
+}
+
+function saveData() {
+  localStorage.setItem(STORAGE_DATA, JSON.stringify(data));
+}
+
+function saveForm() {
+  localStorage.setItem(STORAGE_FORM, JSON.stringify(formData));
+}
+
+
+/********************************************************************
+ *  ESTADOS POR FECHA Y COMERCIAL
+ ********************************************************************/
+
+function ensureMain() {
+  if (!data[currentDate]) data[currentDate] = {};
+
+  if (!data[currentDate][currentSales]) {
+    data[currentDate][currentSales] = {
+      counts: {},
+      log: [],
+      comments: "",
+      phones: []
+    };
+  }
+
+  BUTTON_TYPES.forEach(bt => {
+    if (!data[currentDate][currentSales].counts[bt.key])
+      data[currentDate][currentSales].counts[bt.key] = 0;
+  });
+
+  return data[currentDate][currentSales];
+}
+
+function ensureForm() {
+  if (!formData[currentDate]) formData[currentDate] = {};
+
+  if (!formData[currentDate][currentSales]) {
+    formData[currentDate][currentSales] = {};
+  }
+
+  return formData[currentDate][currentSales];
+}
+
+
+/********************************************************************
+ *  RENDER PRINCIPAL
+ ********************************************************************/
+
+function renderMain() {
+  const state = ensureMain();
+
+  // Contadores
+  BUTTON_TYPES.forEach(bt => {
+    document.getElementById(`count-${bt.key}`).textContent = state.counts[bt.key];
+  });
+
+  // Total
+  const total = BUTTON_TYPES.reduce((sum, bt) => sum + state.counts[bt.key], 0);
+  document.getElementById("totalCountLabel").textContent = total;
+
+  // Historial
+  const log = document.getElementById("logList");
+  if (state.log.length === 0) {
+    log.innerHTML = `<div style="text-align:center;color:#777;">Todavía no hay registros.</div>`;
+  } else {
+    log.innerHTML = state.log
+      .map(l => `<div>${l.time} – ${l.type}</div>`)
+      .join("");
+  }
+
+  // Teléfonos
+  const ph = document.getElementById("phonesList");
+  if (state.phones.length === 0) {
+    ph.innerHTML = `<div style="text-align:center;color:#777;">No hay teléfonos guardados.</div>`;
+  } else {
+    ph.innerHTML = state.phones
+      .map(p => `<div>${p.phone} (${p.time})</div>`)
+      .join("");
+  }
+
+  // Comentarios
+  document.getElementById("commentsArea").value = state.comments;
+}
+
+function renderForm() {
+  const main = ensureMain();
+  const f = ensureForm();
+
+  document.getElementById("auto_muestras").value = main.counts["FTB"];
+  document.getElementById("auto_clientes").value = main.counts["YA_SON_CLIENTES"];
+
+  document.querySelectorAll(".form-input").forEach(field => {
+    field.value = f[field.dataset.field] || "";
+  });
+}
+
+
+/********************************************************************
+ *  EVENTOS PRINCIPALES
+ ********************************************************************/
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  loadAll();
+  renderMain();
+  renderForm();
+
+  /* ------------------------- CAMBIAR COMERCIAL ----------------------- */
+  document.querySelectorAll(".sales-chip").forEach(btn => {
+    btn.addEventListener("click", () => {
+      currentSales = btn.dataset.sales;
+
+      document.querySelectorAll(".sales-chip").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      renderMain();
+      renderForm();
+    });
+  });
+
+  /* --------------------------- CAMBIAR FECHA -------------------------- */
+  document.querySelectorAll(".date-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      currentDate = btn.dataset.date;
+
+      document.querySelectorAll(".date-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      renderMain();
+      renderForm();
+    });
+  });
+
+  /* ------------------------------ SUMAR ------------------------------- */
+  document.querySelectorAll(".btn[data-type]").forEach(button => {
+    button.addEventListener("click", () => {
+      const key = button.dataset.type;
+      const s = ensureMain();
+      const t = new Date();
+
+      s.counts[key]++;
+
+      s.log.push({
+        time: t.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"}),
+        type: key
+      });
+
+      saveData();
+      renderMain();
+      renderForm();
+    });
+  });
+
+/* ------------------------------ RESTAR ------------------------------ */
+document.querySelectorAll(".minus-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const key = btn.dataset.minus;
+    const s = ensureMain();
+
+    if (s.counts[key] > 0) {
+      s.counts[key]--;
+
+      // 🟧 Eliminar la última entrada del historial con ese tipo
+      const idx = s.log.map(l => l.type).lastIndexOf(key);
+      if (idx !== -1) {
+        s.log.splice(idx, 1);
+      }
+    }
+
+    saveData();
+    renderMain();
+    renderForm();
+  });
+});
+
+
+  /* ----------------------- GUARDAR TELÉFONO --------------------------- */
+  document.getElementById("addPhoneBtn").addEventListener("click", () => {
+    const inp = document.getElementById("phoneInput");
+    if (!inp.value.trim()) return;
+
+    const s = ensureMain();
+    const t = new Date();
+
+    s.phones.push({
+      phone: inp.value.trim(),
+      time: t.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"})
+    });
+
+    inp.value = "";
+    saveData();
+    renderMain();
+    renderForm();
+  });
+
+  /* ----------------------- GUARDAR COMENTARIOS ------------------------ */
+  document.getElementById("saveCommentBtn").addEventListener("click", () => {
+    const s = ensureMain();
+    s.comments = document.getElementById("commentsArea").value;
+
+    saveData();
+    alert("Comentarios guardados ✔");
+  });
+
+  /* ----------------------- GUARDAR FORMULARIO ------------------------- */
+  document.querySelectorAll(".form-input").forEach(field => {
+    field.addEventListener("input", () => {
+      const f = ensureForm();
+      f[field.dataset.field] = field.value;
+
+      saveForm();
+    });
+  });
+
+  /* -------------------------- FORM DESPLEGABLE ------------------------- */
+  document.getElementById("formularioToggle").addEventListener("click", () => {
+    const box = document.getElementById("formularioFinDia");
+    const arrow = document.querySelector("#formularioToggle span");
+
+    const isOpen = box.style.display === "block";
+    box.style.display = isOpen ? "none" : "block";
+    arrow.textContent = isOpen ? "▼" : "▲";
+
+    if (!isOpen) {
+      box.scrollIntoView({ behavior:"smooth" });
+    }
+  });
+
+  /* ------------------------ EXPORTAR CSV ------------------------------- */
+  document.getElementById("exportFormCSV").addEventListener("click", () => {
+    const f = ensureForm();
+    const m = ensureMain();
+
+    let csv = [
+      ["Fecha", currentDate],
+      ["Comercial", currentSales],
+      ["FTB", m.counts["FTB"]],
+      ["Clientes", m.counts["YA_SON_CLIENTES"]],
+      ["Comentarios", m.comments || ""]
+    ]
+      .map(r => `"${r[0]}";"${String(r[1]).replace(/"/g, '""')}"`)
+      .join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `formulario_${currentSales}_${currentDate}.csv`;
+    a.click();
+  });
+
+  /* --------------------- EXPORTAR ZIP --------------------------------- */
+  document.getElementById("exportFormZIP").addEventListener("click", async () => {
+    const zip = new JSZip();
+    const m = ensureMain();
+    const f = ensureForm();
+
+    zip.file("contadores.txt",
+      BUTTON_TYPES.map(bt => `${bt.label}: ${m.counts[bt.key]}`).join("\n")
+    );
+
+    zip.file("telefonos.txt",
+      m.phones.map(p => `${p.phone} (${p.time})`).join("\n")
+    );
+
+    zip.file("historial.txt",
+      m.log.map(l => `${l.time} – ${l.type}`).join("\n")
+    );
+
+    zip.file("comentarios.txt", m.comments || "");
+
+    zip.file("formulario.json", JSON.stringify(f, null, 2));
+
+    const blobZip = await zip.generateAsync({ type: "blob" });
+    const url = URL.createObjectURL(blobZip);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `todo_${currentSales}_${currentDate}.zip`;
+    a.click();
+  });
+
+  /* ---------------------- RESET TOTAL -------------------------------- */
+  document.getElementById("resetFullBtn").addEventListener("click", () => {
+    if (!confirm("¿Borrar TODOS los datos guardados?")) return;
+
+    localStorage.clear();
+    location.reload();
+  });
+
+  /* ---------------------- VOLVER ARRIBA ------------------------------ */
+  document.getElementById("volverArribaBtn").addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior:"smooth" });
+  });
+
+});
+</script>
+
+</body>
+</html>
+
